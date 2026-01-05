@@ -1,0 +1,84 @@
+# RAG Pipeline Configuration
+
+# Embedding settings
+embedding:
+  # Model type: 'local' or 'remote'
+  type: local
+
+  # Local embedding settings
+  local:
+    # HuggingFace model name or local path
+    model_name: sentence-transformers/all-MiniLM-L6-v2
+    # Device to run on: 'cpu', 'cuda', 'mps'
+    device: cpu
+    # Whether to normalize embeddings
+    normalize: true
+
+  # Remote embedding settings (if using embedding server)
+  remote:
+    url: http://localhost:5001/text2vec/embed
+    model: text2vec-base-multilingual
+    timeout: 30
+
+# Vector store settings
+vector_store:
+  # Type: 'faiss' or 'milvus'
+  type: faiss
+
+  # FAISS settings
+  faiss:
+    # Index type: 'flat', 'ivf_flat', 'hnsw'
+    index_type: flat
+    # Metric: 'cosine', 'l2', 'ip'
+    metric: cosine
+    # Whether to normalize vectors
+    normalize: true
+
+  # Milvus settings
+  milvus:
+    host: localhost
+    port: 19530
+    collection_name: documents
+    # user: your_user
+    # password: your_password
+    db_name: default
+    metric_type: COSINE
+    index_type: IVF_FLAT
+
+# Document processing settings
+document_processing:
+  # Chunk size in characters
+  chunk_size: 500
+  # Overlap between chunks
+  chunk_overlap: 50
+  # Chunking strategy: 'fixed_size', 'sentence', 'paragraph', 'recursive'
+  chunking_strategy: recursive
+  # File encoding
+  encoding: utf-8
+
+# Retrieval settings
+retrieval:
+  # Default number of results
+  top_k: 5
+  # Similarity threshold (0-1 for cosine)
+  threshold: null
+  # Whether to rerank results
+  rerank: false
+
+# Prompt settings
+prompts:
+  # Language: 'en' or 'cn'
+  language: en
+  # Whether to include sources in prompts
+  include_sources: true
+
+  # Custom templates (optional)
+  # rag_template: |
+  #   Based on the following context...
+  # qa_template: |
+  #   You are a helpful assistant...
+
+# Logging settings
+logging:
+  level: INFO
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

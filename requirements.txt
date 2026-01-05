@@ -1,0 +1,26 @@
+# Core dependencies
+numpy>=1.21.0
+requests>=2.25.0
+
+# Embeddings
+sentence-transformers>=2.2.0
+langchain>=0.1.0
+langchain-community>=0.0.10
+
+# Vector stores
+faiss-cpu>=1.7.0  # Use faiss-gpu for GPU support
+pymilvus>=2.3.0   # Optional: for Milvus support
+
+# Document processing
+pypdf>=3.0.0      # PDF support
+python-docx>=0.8.11  # DOCX support
+
+# Text processing
+scikit-learn>=1.0.0  # For vector normalization
+
+# Optional: Token counting
+tiktoken>=0.5.0
+
+# Optional: Advanced PDF processing
+# marker-pdf>=0.1.0  # Uncomment for Marker PDF support
+# surya-ocr>=0.1.0   # Uncomment for OCR support
