@@ -67,12 +67,28 @@ pipeline.add_documents([
     "Document 2 content..."
 ])
 
-# Query
+# Retrieve relevant chunks
 results = pipeline.retrieve("Your question here", top_k=3)
 
-# Generate response (requires LLM)
-response = pipeline.generate("Your question here", top_k=3)
+# Option A: build the RAG prompt and call any LLM yourself
+prompt = pipeline.build_prompt("Your question here", top_k=3)
+
+# Option B: let the pipeline call the LLM. There is no built-in LLM --
+# pass a client object exposing generate(), chat(), complete(), or __call__()
+# (and stream() / chat_stream() if you use stream=True):
+class MyLLMClient:
+    def generate(self, prompt: str, **kwargs) -> str:
+        ...  # call your LLM API here and return the response text
+
+response = pipeline.generate(
+    "Your question here",
+    llm_client=MyLLMClient(),
+    top_k=3
+)
 ```
+
+See [examples/example_openai.py](examples/example_openai.py) for a complete
+client wrapping the OpenAI API, including streaming.
 
 ## Configuration
 
