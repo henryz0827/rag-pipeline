@@ -90,6 +90,31 @@ response = pipeline.generate(
 See [examples/example_openai.py](examples/example_openai.py) for a complete
 client wrapping the OpenAI API, including streaming.
 
+## Evaluation
+
+Retrieval quality on a built-in benchmark: 55 passages in deliberately
+confusable topic clusters (with hard-negative distractors), 25 indirect
+queries with known gold passages, FAISS store, `top_k=5`. Measured on an
+Apple M3 Max (CPU):
+
+| Embedding model | Dim | Hit@1 | Hit@3 | Hit@5 | MRR@5 | ms/query |
+|---|---|---|---|---|---|---|
+| paraphrase-MiniLM-L3-v2 | 384 | 0.80 | 0.96 | 1.00 | 0.89 | 3.9 |
+| all-MiniLM-L6-v2 | 384 | 0.84 | 1.00 | 1.00 | 0.92 | 7.1 |
+| all-MiniLM-L12-v2 | 384 | 0.88 | 0.96 | 0.96 | 0.92 | 13.2 |
+| all-MiniLM-L6-v2 (hybrid) | 384 | 0.96 | 1.00 | 1.00 | 0.98 | 7.1 |
+
+The hybrid row uses `Retriever.hybrid_retrieve()` (vector search plus
+keyword boosting, `keyword_weight=0.3`), which recovers most Hit@1
+misses on this corpus. `ms/query` is embed + search, excluding model
+load.
+
+Reproduce with:
+
+```bash
+python examples/eval_retrieval.py
+```
+
 ## Configuration
 
 Edit `config/config.yaml` to customize:
